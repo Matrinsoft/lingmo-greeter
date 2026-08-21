@@ -1,0 +1,41 @@
+Source: lingmo-greeter
+Section: admin
+Priority: optional
+Maintainer: Lingmo OS Team <team@lingmo.org>
+Build-Depends:
+    debhelper-compat (=13),
+    git,
+    just (>= 1.13.0),
+    libclang-dev,
+    libdav1d-dev,
+    libinput-dev,
+    libpam-dev,
+    libwayland-dev,
+    libxkbcommon-dev,
+    pkg-config,
+    rust-all,
+Standards-Version: 4.6.2
+Homepage: https://github.com/Matrinsoft/lingmo-greeter
+
+Package: lingmo-greeter
+Architecture: amd64 arm64
+Pre-Depends: greetd,
+Depends:
+    adduser,
+    lingmo-comp,
+    lingmo-greeter-daemon,
+    lingmo-randr,
+    dbus,
+    ${misc:Depends},
+    ${shlibs:Depends}
+Recommends: xinit
+Suggests: libpam-fprintd
+Provides: x-display-manager
+Description: Cosmic Greeter
+
+Package: lingmo-greeter-daemon
+Architecture: amd64 arm64
+Depends:
+    ${misc:Depends},
+    ${shlibs:Depends}
+Description: Cosmic Greeter daemon
