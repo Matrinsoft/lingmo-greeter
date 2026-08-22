@@ -159,8 +159,8 @@ default-features = false
 features = ["advanced-shaping"]
 
 [patch."https://github.com/Matrinsoft/lingmo-protocols"]
-cctk = { git = "https://github.com/Matrinsoft/lingmo-protocols//", package = "cosmic-client-toolkit", rev = "32283d7" }
-cosmic-protocols = { git = "https://github.com/Matrinsoft/lingmo-protocols//", rev = "32283d7" }
+cctk = { git = "https://github.com/Matrinsoft/lingmo-protocols//", package = "cosmic-client-toolkit", rev = "bc41a9a7" }
+cosmic-protocols = { git = "https://github.com/Matrinsoft/lingmo-protocols//", rev = "bc41a9a7" }
 
 # [patch."https://github.com/Matrinsoft/liblingmo"]
 # iced_core = { git = "https://github.com/Matrinsoft/libcosmic//", branch = "theme-v2" }
