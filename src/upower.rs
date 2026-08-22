@@ -1,6 +1,6 @@
-use lingmo::iced::futures::channel::mpsc;
-use lingmo::iced::futures::{SinkExt, StreamExt};
-use lingmo::iced::{Subscription, stream};
+use cosmic::iced::futures::channel::mpsc;
+use cosmic::iced::futures::{SinkExt, StreamExt};
+use cosmic::iced::{Subscription, stream};
 use futures_util::select;
 use std::any::TypeId;
 use std::time::Duration;

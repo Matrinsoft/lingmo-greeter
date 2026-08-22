@@ -1,7 +1,7 @@
 use anyhow::bail;
 use async_fn_stream::StreamEmitter;
-use lingmo::widget::{column, text};
-use lingmo::{Element, Task, style};
+use cosmic::widget::{column, text};
+use cosmic::{Element, Task, style};
 use futures_util::StreamExt;
 use icu::datetime::input::DateTime;
 use icu::datetime::options::TimePrecision;

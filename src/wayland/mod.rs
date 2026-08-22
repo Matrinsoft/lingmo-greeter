@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 use cctk::sctk::reexports::calloop;
-use lingmo::iced::futures::{self, SinkExt};
-use lingmo::iced::{self, Subscription, stream};
+use cosmic::iced::futures::{self, SinkExt};
+use cosmic::iced::{self, Subscription, stream};
 use cosmic_settings_a11y_manager_subscription::{
     self as thread, AccessibilityEvent, AccessibilityRequest,
 };
@@ -60,7 +60,7 @@ async fn start_listening(
                 State::Error
             }
         }
-        State::Error => lingmo::iced::futures::future::pending().await,
+        State::Error => cosmic::iced::futures::future::pending().await,
     }
 }
 
