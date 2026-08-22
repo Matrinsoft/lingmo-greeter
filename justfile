@@ -88,34 +88,34 @@ uninstall:
 
 # Vendor dependencies locally
 vendor:
-    #!/usr/bin/env sh
-    mkdir -p .cargo
-    cargo vendor --sync Cargo.toml 2>/dev/null | awk '/^\[/{p=1} p' > .cargo/config.toml
-    if ! grep -q 'directory' .cargo/config.toml 2>/dev/null; then
-        echo '[source.crates-io]' >> .cargo/config.toml
-        echo 'replace-with = "vendored-sources"' >> .cargo/config.toml
-        echo '' >> .cargo/config.toml
-        echo '[source.vendored-sources]' >> .cargo/config.toml
-        echo 'directory = "vendor"' >> .cargo/config.toml
-    fi
-    grep '^source = "git+" Cargo.lock | sed 's/source = "//;s/"$//' | sort -u | while read src; do \
-        echo "[source \"$src\"]"; \
-        echo 'replace-with = "vendored-sources"'; \
-        echo ""; \
-    done >> .cargo/config.toml
-    echo >> .cargo/config.toml
-    echo '[env]' >> .cargo/config.toml
-    if [ -z "${SOURCE_DATE_EPOCH}" ]; then
-        SOURCE_DATE_EPOCH=$(git log -1 --format='%ct')
-    fi
-    if [ -z "${SOURCE_GIT_HASH}" ]; then
-        SOURCE_GIT_HASH=$(git rev-parse HEAD)
-    fi
-    source_date="$(date -d "@${SOURCE_DATE_EPOCH}" "+%Y-%m-%d")"
-    echo "VERGEN_GIT_COMMIT_DATE = \"${source_date}\"" >> .cargo/config.toml
-    echo "VERGEN_GIT_SHA = \"${SOURCE_GIT_HASH}\"" >> .cargo/config.toml
-    tar pcf vendor.tar .cargo vendor
-    rm -rf .cargo vendor
+	#!/usr/bin/env sh
+	mkdir -p .cargo
+	cargo vendor --sync Cargo.toml 2>/dev/null | awk '/^\[/{p=1} p' > .cargo/config.toml
+	if ! grep -q 'directory' .cargo/config.toml 2>/dev/null; then
+	echo '[source.crates-io]' >> .cargo/config.toml
+	echo 'replace-with = "vendored-sources"' >> .cargo/config.toml
+	echo '' >> .cargo/config.toml
+	echo '[source.vendored-sources]' >> .cargo/config.toml
+	echo 'directory = "vendor"' >> .cargo/config.toml
+	fi
+	grep '^source = "git+" Cargo.lock | sed 's/source = "//;s/"$//' | sort -u | while read src; do \
+	echo "[source \"$src\"]"; \
+	echo 'replace-with = "vendored-sources"'; \
+	echo ""; \
+	done >> .cargo/config.toml
+	echo >> .cargo/config.toml
+	echo '[env]' >> .cargo/config.toml
+	if [ -z "${SOURCE_DATE_EPOCH}" ]; then
+	SOURCE_DATE_EPOCH=$(git log -1 --format='%ct')
+	fi
+	if [ -z "${SOURCE_GIT_HASH}" ]; then
+	SOURCE_GIT_HASH=$(git rev-parse HEAD)
+	fi
+	source_date="$(date -d "@${SOURCE_DATE_EPOCH}" "+%Y-%m-%d")"
+	echo "VERGEN_GIT_COMMIT_DATE = \"${source_date}\"" >> .cargo/config.toml
+	echo "VERGEN_GIT_SHA = \"${SOURCE_GIT_HASH}\"" >> .cargo/config.toml
+	tar pcf vendor.tar .cargo vendor
+	rm -rf .cargo vendor
 
 # Extracts vendored dependencies
 vendor-extract:
