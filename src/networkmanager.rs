@@ -1,6 +1,6 @@
-use cosmic::iced::Subscription;
-use cosmic::iced::futures::channel::mpsc;
-use cosmic::iced::futures::{SinkExt, StreamExt};
+use lingmo::iced::Subscription;
+use lingmo::iced::futures::channel::mpsc;
+use lingmo::iced::futures::{SinkExt, StreamExt};
 use cosmic_dbus_networkmanager::device::SpecificDevice;
 use cosmic_dbus_networkmanager::nm::NetworkManager;
 use std::any::TypeId;
@@ -39,7 +39,7 @@ pub fn subscription() -> Subscription<Option<&'static str>> {
     struct NetworkSubscription;
 
     Subscription::run_with(TypeId::of::<NetworkSubscription>(), |_| {
-        cosmic::iced::stream::channel(16, |mut msg_tx| async move {
+        lingmo::iced::stream::channel(16, |mut msg_tx| async move {
             match handler(&mut msg_tx).await {
                 Ok(()) => {}
                 Err(err) => {

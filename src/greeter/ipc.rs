@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 use super::{Message, SocketState};
-use cosmic::iced::Subscription;
+use lingmo::iced::Subscription;
 use futures_util::SinkExt;
 use greetd_ipc::codec::TokioCodec;
 use std::sync::Arc;
@@ -39,9 +39,9 @@ fn greetd_error_to_message(error_type: greetd_ipc::ErrorType, description: &str)
 pub fn subscription() -> Subscription<Message> {
     struct GreetdSubscription;
     Subscription::run_with(std::any::TypeId::of::<GreetdSubscription>(), |_| {
-        cosmic::iced::stream::channel(
+        lingmo::iced::stream::channel(
             1,
-            |mut sender: cosmic::iced::futures::channel::mpsc::Sender<_>| async move {
+            |mut sender: lingmo::iced::futures::channel::mpsc::Sender<_>| async move {
                 let (tx, mut rx) = mpsc::channel::<greetd_ipc::Request>(1);
                 _ = sender.send(Message::GreetdChannel(tx)).await;
 

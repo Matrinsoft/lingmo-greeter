@@ -1,15 +1,15 @@
-use cosmic::app::{Core, Task};
-use cosmic::iced::core::SmolStr;
-use cosmic::iced::event::wayland::{Event as WaylandEvent, OutputEvent, SessionLockEvent};
-use cosmic::iced::event::{self};
-use cosmic::iced::keyboard::{Event as KeyEvent, Key, Modifiers};
-use cosmic::iced::platform_specific::shell::commands::blur::blur;
-use cosmic::iced::runtime::core::window::Id as SurfaceId;
-use cosmic::iced::runtime::platform_specific::wayland::CornerRadius;
-use cosmic::iced::{self, Rectangle, Size, Subscription};
-use cosmic::surface::corner_radius::rounded_rect_strips;
-use cosmic::widget::rectangle_tracker::{RectangleUpdate, rectangle_tracker_subscription};
-use cosmic::widget::{self, RectangleTracker};
+use lingmo::app::{Core, Task};
+use lingmo::iced::core::SmolStr;
+use lingmo::iced::event::wayland::{Event as WaylandEvent, OutputEvent, SessionLockEvent};
+use lingmo::iced::event::{self};
+use lingmo::iced::keyboard::{Event as KeyEvent, Key, Modifiers};
+use lingmo::iced::platform_specific::shell::commands::blur::blur;
+use lingmo::iced::runtime::core::window::Id as SurfaceId;
+use lingmo::iced::runtime::platform_specific::wayland::CornerRadius;
+use lingmo::iced::{self, Rectangle, Size, Subscription};
+use lingmo::surface::corner_radius::rounded_rect_strips;
+use lingmo::widget::rectangle_tracker::{RectangleUpdate, rectangle_tracker_subscription};
+use lingmo::widget::{self, RectangleTracker};
 use cosmic_greeter_daemon::{BgSource, UserData};
 use cosmic_protocols::keyboard_layout::v1::client::zcosmic_keyboard_layout_v1::ZcosmicKeyboardLayoutV1;
 use std::collections::{HashMap, HashSet};
@@ -133,8 +133,8 @@ impl<M: From<Message> + Send + 'static> Common<M> {
         (
             app,
             Task::batch(vec![
-                crate::time::tick().map(|_| cosmic::Action::App(Message::Tick.into())),
-                crate::time::tz_updates().map(|tz| cosmic::Action::App(Message::Tz(tz).into())),
+                crate::time::tick().map(|_| lingmo::Action::App(Message::Tick.into())),
+                crate::time::tz_updates().map(|tz| lingmo::Action::App(Message::Tz(tz).into())),
             ]),
         )
     }
@@ -283,7 +283,7 @@ impl<M: From<Message> + Send + 'static> Common<M> {
                     }
                 }
                 if let Some(on_output_event) = &self.on_output_event {
-                    return Task::done(cosmic::Action::App(on_output_event(output_event, output)));
+                    return Task::done(lingmo::Action::App(on_output_event(output_event, output)));
                 }
             }
             Message::PowerInfo(power_info_opt) => {
@@ -308,7 +308,7 @@ impl<M: From<Message> + Send + 'static> Common<M> {
             }
             Message::SessionLockEvent(lock_event) => {
                 if let Some(on_session_lock_event) = &self.on_session_lock_event {
-                    return Task::done(cosmic::Action::App(on_session_lock_event(lock_event)));
+                    return Task::done(lingmo::Action::App(on_session_lock_event(lock_event)));
                 }
             }
             Message::Tick => {

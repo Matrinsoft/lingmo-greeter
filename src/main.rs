@@ -1,4 +1,4 @@
-﻿// Copyright 2023 System76 <info@system76.com>
+// Copyright 2023 System76 <info@system76.com>
 // SPDX-License-Identifier: GPL-3.0-only
 
 use clap_lex::RawArgs;
@@ -45,7 +45,7 @@ fn print_help(version: &str, git_rev: &str) {
         r#"cosmic-greeter {version} (git commit {git_rev})
 System76 <info@system76.com>
 
-Designed for the COSMIC鈩?desktop environment, cosmic-greeter is a libcosmic
+Designed for the COSMIC鈩?desktop environment, cosmic-greeter is a liblingmo
 frontend for greetd which can be run inside of cosmic-comp.
 
 Project home page: https://github.com/Matrinsoft/lingmo-greeter

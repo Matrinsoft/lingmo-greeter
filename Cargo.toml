@@ -1,4 +1,4 @@
-﻿[package]
+[package]
 name = "cosmic-greeter"
 version = "0.1.0"
 edition = "2024"
@@ -19,7 +19,7 @@ cosmic-config = { workspace = true, features = ["calloop", "macro"] }
 cosmic-greeter-config.workspace = true
 cosmic-greeter-daemon = { path = "daemon" }
 dirs = "6"
-libcosmic = { workspace = true, features = [
+liblingmo = { workspace = true, features = [
     "autosize",
     "winit",
     "multi-window",
@@ -146,15 +146,15 @@ features = ["output", "randr"]
 path = "cosmic-greeter-config"
 
 [workspace.dependencies.cosmic-config]
-git = "https://github.com/Matrinsoft/libcosmic"
+git = "https://github.com/Matrinsoft/liblingmo"
 default-features = false
 
 [workspace.dependencies.cosmic-theme]
-git = "https://github.com/Matrinsoft/libcosmic"
+git = "https://github.com/Matrinsoft/liblingmo"
 default-features = false
 
 [workspace.dependencies.libcosmic]
-git = "https://github.com/Matrinsoft/libcosmic"
+git = "https://github.com/Matrinsoft/liblingmo"
 default-features = false
 features = ["advanced-shaping"]
 
@@ -162,13 +162,13 @@ features = ["advanced-shaping"]
 cctk = { git = "https://github.com/Matrinsoft/lingmo-protocols//", package = "cosmic-client-toolkit", rev = "32283d7" }
 cosmic-protocols = { git = "https://github.com/Matrinsoft/lingmo-protocols//", rev = "32283d7" }
 
-# [patch."https://github.com/Matrinsoft/libcosmic"]
-# iced_core = { git = "https://github.com/Matrinsoft/libcosmic//", branch = "theme-v2" }
-# iced_futures = { git = "https://github.com/Matrinsoft/libcosmic//", branch = "theme-v2" }
-# libcosmic = { git = "https://github.com/Matrinsoft/libcosmic//", branch = "theme-v2" }
-# cosmic-config = { git = "https://github.com/Matrinsoft/libcosmic//", branch = "theme-v2" }
-# cosmic-theme = { git = "https://github.com/Matrinsoft/libcosmic//", branch = "theme-v2" }
-# libcosmic = { path = "../libcosmic" }
+# [patch."https://github.com/Matrinsoft/liblingmo"]
+# iced_core = { git = "https://github.com/Matrinsoft/liblingmo//", branch = "theme-v2" }
+# iced_futures = { git = "https://github.com/Matrinsoft/liblingmo//", branch = "theme-v2" }
+# liblingmo = { git = "https://github.com/Matrinsoft/liblingmo//", branch = "theme-v2" }
+# cosmic-config = { git = "https://github.com/Matrinsoft/liblingmo//", branch = "theme-v2" }
+# cosmic-theme = { git = "https://github.com/Matrinsoft/liblingmo//", branch = "theme-v2" }
+# liblingmo = { path = "../libcosmic" }
 # cosmic-config = { path = "../libcosmic/cosmic-config" }
 # cosmic-theme = { path = "../libcosmic/cosmic-theme" }
 # iced_futures = { path = "../libcosmic/iced/futures" }

@@ -12,8 +12,8 @@ use cctk::{
         protocol::{wl_keyboard, wl_seat},
     },
 };
-use cosmic::iced;
-use cosmic::iced::futures::{SinkExt, channel::mpsc, executor::block_on};
+use lingmo::iced;
+use lingmo::iced::futures::{SinkExt, channel::mpsc, executor::block_on};
 use std::{hash::Hash, thread};
 
 #[derive(Clone, Debug)]

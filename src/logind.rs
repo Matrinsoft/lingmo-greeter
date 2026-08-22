@@ -1,6 +1,6 @@
-use cosmic::iced::Subscription;
-use cosmic::iced::futures::channel::mpsc;
-use cosmic::iced::futures::{SinkExt, StreamExt};
+use lingmo::iced::Subscription;
+use lingmo::iced::futures::channel::mpsc;
+use lingmo::iced::futures::{SinkExt, StreamExt};
 use logind_zbus::manager::{InhibitType, ManagerProxy};
 use logind_zbus::session::SessionProxy;
 use std::any::TypeId;
@@ -70,7 +70,7 @@ pub fn subscription() -> Subscription<Message> {
     struct LogindSubscription;
 
     Subscription::run_with(TypeId::of::<LogindSubscription>(), |_| {
-        cosmic::iced::stream::channel(16, |mut msg_tx| async move {
+        lingmo::iced::stream::channel(16, |mut msg_tx| async move {
             match handler(&mut msg_tx).await {
                 Ok(()) => {}
                 Err(err) => {

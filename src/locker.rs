@@ -2,19 +2,19 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 use color_eyre::eyre::WrapErr;
-use cosmic::app::{Core, Settings, Task};
-use cosmic::cctk::wayland_protocols::xdg::shell::client::xdg_positioner::Gravity;
-use cosmic::iced::event::wayland::{OutputEvent, SessionLockEvent};
-use cosmic::iced::futures::{self, SinkExt};
-use cosmic::iced::platform_specific::shell::wayland::commands::session_lock::{
+use lingmo::app::{Core, Settings, Task};
+use lingmo::cctk::wayland_protocols::xdg::shell::client::xdg_positioner::Gravity;
+use lingmo::iced::event::wayland::{OutputEvent, SessionLockEvent};
+use lingmo::iced::futures::{self, SinkExt};
+use lingmo::iced::platform_specific::shell::wayland::commands::session_lock::{
     destroy_lock_surface, get_lock_surface, lock, unlock,
 };
-use cosmic::iced::runtime::core::window::Id as SurfaceId;
-use cosmic::iced::runtime::platform_specific::wayland::subsurface::SctkSubsurfaceSettings;
-use cosmic::iced::{
+use lingmo::iced::runtime::core::window::Id as SurfaceId;
+use lingmo::iced::runtime::platform_specific::wayland::subsurface::SctkSubsurfaceSettings;
+use lingmo::iced::{
     self, Alignment, Background, Border, Length, Point, Rectangle, Size, Subscription,
 };
-use cosmic::{Element, executor, surface, theme, widget};
+use lingmo::{Element, executor, surface, theme, widget};
 use cosmic_config::CosmicConfigEntry;
 use cosmic_greeter_daemon::{TimeAppletConfig, UserData};
 use std::any::TypeId;
@@ -93,7 +93,7 @@ pub fn main(user: pwd::Passwd) -> Result<(), Box<dyn std::error::Error>> {
 
     let settings = Settings::default().no_main_window(true);
 
-    cosmic::app::run::<App>(settings, flags)?;
+    lingmo::app::run::<App>(settings, flags)?;
 
     Ok(())
 }
@@ -141,7 +141,7 @@ pub fn pam_thread(username: String, conversation: Conversation) -> Result<(), pa
 }
 
 pub struct Conversation {
-    msg_tx: futures::channel::mpsc::Sender<cosmic::Action<Message>>,
+    msg_tx: futures::channel::mpsc::Sender<lingmo::Action<Message>>,
     value_rx: mpsc::Receiver<String>,
 }
 
@@ -158,7 +158,7 @@ impl Conversation {
 
         futures::executor::block_on(async {
             self.msg_tx
-                .send(cosmic::Action::App(
+                .send(lingmo::Action::App(
                     common::Message::Prompt(prompt.to_string(), secret, Some(String::new())).into(),
                 ))
                 .await
@@ -187,7 +187,7 @@ impl Conversation {
 
         futures::executor::block_on(async {
             self.msg_tx
-                .send(cosmic::Action::App(
+                .send(lingmo::Action::App(
                     common::Message::Prompt(prompt.to_string(), false, None).into(),
                 ))
                 .await
@@ -206,7 +206,7 @@ impl Conversation {
 
         futures::executor::block_on(async {
             self.msg_tx
-                .send(cosmic::Action::App(Message::Error(prompt.to_string())))
+                .send(lingmo::Action::App(Message::Error(prompt.to_string())))
                 .await
         })
         .map_err(|err| {
@@ -253,7 +253,7 @@ pub struct Flags {
     logind_available: bool,
 }
 
-///TODO: this is custom code that should be better handled by libcosmic
+///TODO: this is custom code that should be better handled by liblingmo
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Dropdown {
     Keyboard,
@@ -290,7 +290,7 @@ impl From<common::Message> for Message {
 enum State {
     Locking,
     Locked {
-        task_handle: cosmic::iced::task::Handle,
+        task_handle: lingmo::iced::task::Handle,
     },
     Unlocking,
     Unlocked,
@@ -350,7 +350,7 @@ impl App {
                 );
             }
 
-            //TODO: move code for custom dropdowns to libcosmic
+            //TODO: move code for custom dropdowns to liblingmo
             let menu_checklist = |label, value, message| {
                 Element::from(
                     widget::menu::menu_button(vec![
@@ -386,10 +386,10 @@ impl App {
                     Element::from(items)
                 };
 
-                let menu: widget::Container<'_, Message, cosmic::prelude::Theme> =
+                let menu: widget::Container<'_, Message, lingmo::prelude::Theme> =
                     widget::container(items)
                         .padding(1)
-                        //TODO: move style to libcosmic
+                        //TODO: move style to liblingmo
                         .class(theme::Container::custom(|theme| {
                             let cosmic = theme.cosmic();
                             let component = &cosmic.background(theme.transparent).component;
@@ -523,7 +523,7 @@ impl App {
                             .get(&surface_id)
                             .and_then(|id| self.common.text_input_ids.get(id))
                             .cloned()
-                            .unwrap_or_else(|| cosmic::widget::Id::new("text_input"));
+                            .unwrap_or_else(|| lingmo::widget::Id::new("text_input"));
 
                         let mut text_input = widget::secure_input(
                             prompt.clone(),
@@ -600,13 +600,13 @@ impl App {
         let menu = widget::layer_container(
             iced::widget::row![left_element, right_element].align_y(Alignment::Start),
         )
-        .layer(cosmic::cosmic_theme::Layer::Background)
+        .layer(lingmo::cosmic_theme::Layer::Background)
         .padding(16)
-        .class(cosmic::theme::Container::Custom(Box::new(
-            |theme: &cosmic::Theme| {
+        .class(lingmo::theme::Container::Custom(Box::new(
+            |theme: &lingmo::Theme| {
                 // Use background appearance as the base
                 let mut appearance =
-                    widget::container::Catalog::style(theme, &cosmic::theme::Container::Background);
+                    widget::container::Catalog::style(theme, &lingmo::theme::Container::Background);
                 let c: iced::Color = theme.cosmic().background(theme.transparent).base.into();
                 appearance.background = Some(iced::Background::Color(c));
                 appearance.border = iced::Border::default().rounded(16.0);
@@ -632,17 +632,17 @@ impl App {
         .width(Length::Fill)
         .height(Length::Fill)
         .align_x(Alignment::Center)
-        .class(cosmic::theme::Container::Transparent)
+        .class(lingmo::theme::Container::Transparent)
         .into()
     }
 }
 
-/// Implement [`cosmic::Application`] to integrate with COSMIC.
-impl cosmic::Application for App {
+/// Implement [`lingmo::Application`] to integrate with COSMIC.
+impl lingmo::Application for App {
     /// Default async executor to use with the app.
     type Executor = executor::Default;
 
-    /// Argument received [`cosmic::Application::new`].
+    /// Argument received [`lingmo::Application::new`].
     type Flags = Flags;
 
     /// Message type specific to our [`App`].
@@ -661,7 +661,7 @@ impl cosmic::Application for App {
 
     /// Creates the application, and optionally emits command on initialize.
     fn init(mut core: Core, flags: Self::Flags) -> (Self, Task<Self::Message>) {
-        core.set_app_type(cosmic::core::AppType::System);
+        core.set_app_type(lingmo::core::AppType::System);
         let (mut common, common_task) = Common::init(core);
         common.on_output_event = Some(Box::new(|output_event, output| {
             Message::OutputEvent(output_event, output)
@@ -794,7 +794,7 @@ impl cosmic::Application for App {
                             .subsurface_rects
                             .insert(output.clone(), Rectangle::new(loc, sub_size));
 
-                        let msg = cosmic::surface::action::subsurface(
+                        let msg = lingmo::surface::action::subsurface(
                             move |_: &mut App| SctkSubsurfaceSettings {
                                 parent: surface_id,
                                 id: subsurface_id,
@@ -807,14 +807,14 @@ impl cosmic::Application for App {
                                 input_zone: None,
                             },
                             Some(Box::new(move |app: &App| {
-                                app.menu(subsurface_id).map(cosmic::Action::App)
+                                app.menu(subsurface_id).map(lingmo::Action::App)
                             })),
                         );
 
                         if matches!(self.state, State::Locked { .. }) {
                             return get_lock_surface(surface_id, output).chain({
-                                cosmic::task::message(cosmic::Action::Cosmic(
-                                    cosmic::app::Action::Surface(msg),
+                                lingmo::task::message(lingmo::Action::Cosmic(
+                                    lingmo::app::Action::Surface(msg),
                                 ))
                             });
                         }
@@ -873,7 +873,7 @@ impl cosmic::Application for App {
 
                     let username = self.flags.user_data.name.clone();
                     let (locked_task, locked_handle) =
-                        cosmic::task::stream(cosmic::iced::stream::channel(
+                        lingmo::task::stream(lingmo::iced::stream::channel(
                             16,
                             |mut msg_tx: futures::channel::mpsc::Sender<_>| async move {
                                 // Send heartbeat once a second to update time.
@@ -885,7 +885,7 @@ impl cosmic::Application for App {
 
                                         loop {
                                             output
-                                                .send(cosmic::Action::App(Message::None))
+                                                .send(lingmo::Action::App(Message::None))
                                                 .await
                                                 .unwrap();
 
@@ -898,7 +898,7 @@ impl cosmic::Application for App {
                                     loop {
                                         let (value_tx, value_rx) = mpsc::channel(16);
                                         msg_tx
-                                            .send(cosmic::Action::App(Message::Channel(value_tx)))
+                                            .send(lingmo::Action::App(Message::Channel(value_tx)))
                                             .await
                                             .unwrap();
 
@@ -919,7 +919,7 @@ impl cosmic::Application for App {
                                             Ok(()) => {
                                                 tracing::info!("successfully authenticated");
                                                 msg_tx
-                                                    .send(cosmic::Action::App(Message::Unlock))
+                                                    .send(lingmo::Action::App(Message::Unlock))
                                                     .await
                                                     .unwrap();
                                                 break;
@@ -927,7 +927,7 @@ impl cosmic::Application for App {
                                             Err(err) => {
                                                 tracing::warn!("authentication error: {}", err);
                                                 msg_tx
-                                                    .send(cosmic::Action::App(Message::Error(
+                                                    .send(lingmo::Action::App(Message::Error(
                                                         pam_error_to_message(&err),
                                                     )))
                                                     .await
@@ -975,7 +975,7 @@ impl cosmic::Application for App {
                                 .surface_names
                                 .insert(subsurface_id, name.clone());
 
-                            let msg = cosmic::surface::action::subsurface(
+                            let msg = lingmo::surface::action::subsurface(
                                 move |_: &mut App| SctkSubsurfaceSettings {
                                     parent: surface_id,
                                     id: subsurface_id,
@@ -988,11 +988,11 @@ impl cosmic::Application for App {
                                     input_zone: None,
                                 },
                                 Some(Box::new(move |app: &App| {
-                                    app.menu(subsurface_id).map(cosmic::Action::App)
+                                    app.menu(subsurface_id).map(lingmo::Action::App)
                                 })),
                             );
-                            commands.push(cosmic::task::message(cosmic::Action::Cosmic(
-                                cosmic::app::Action::Surface(msg),
+                            commands.push(lingmo::task::message(lingmo::Action::Cosmic(
+                                lingmo::app::Action::Surface(msg),
                             )));
                         } else {
                             tracing::error!("no rectangle for subsurface creation...");
@@ -1066,7 +1066,7 @@ impl cosmic::Application for App {
                 self.authenticating = true;
                 match self.value_tx_opt.take() {
                     Some(value_tx) => {
-                        return cosmic::task::future(async move {
+                        return lingmo::task::future(async move {
                             value_tx.send(value).await.unwrap();
                             Message::Channel(value_tx)
                         });
@@ -1076,10 +1076,10 @@ impl cosmic::Application for App {
             }
             Message::Suspend => {
                 #[cfg(feature = "logind")]
-                return cosmic::Task::future(async move { crate::logind::suspend().await.err() })
+                return lingmo::Task::future(async move { crate::logind::suspend().await.err() })
                     .and_then(|err| {
                         tracing::error!("failed to suspend: {:?}", err);
-                        cosmic::task::message(cosmic::Action::App(Message::Error(err.to_string())))
+                        lingmo::task::message(lingmo::Action::App(Message::Error(err.to_string())))
                     });
             }
             Message::TimeAppletConfig(config) => {
@@ -1158,8 +1158,8 @@ impl cosmic::Application for App {
                 }
             }
             Message::Surface(a) => {
-                return cosmic::task::message(cosmic::Action::Cosmic(
-                    cosmic::app::Action::Surface(a),
+                return lingmo::task::message(lingmo::Action::Cosmic(
+                    lingmo::app::Action::Surface(a),
                 ));
             }
         }
