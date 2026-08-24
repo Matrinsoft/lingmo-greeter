@@ -22,6 +22,6 @@ execute_after_dh_install:
 	dh_installsysusers
 
 override_dh_installsystemd:
-	dh_installsystemd -pcosmic-greeter --no-start -r cosmic-greeter.service
-	dh_installsystemd -pcosmic-greeter-daemon cosmic-greeter-daemon.service
+	dh_installsystemd -plingmo-greeter --no-start -r lingmo-greeter.service
+	dh_installsystemd -plingmo-greeter-daemon lingmo-greeter-daemon.service
 
