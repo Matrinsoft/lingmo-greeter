@@ -58,9 +58,9 @@ use crate::fl;
 static USERNAME_ID: LazyLock<iced::id::Id> = LazyLock::new(|| iced::id::Id::new("username-id"));
 
 #[proxy(
-    interface = "com.system76.CosmicGreeter",
-    default_service = "com.system76.CosmicGreeter",
-    default_path = "/com/system76/CosmicGreeter"
+    interface = "com.lingmoos.LingmoGreeter",
+    default_service = "com.lingmoos.LingmoGreeter",
+    default_path = "/com/lingmoos/LingmoGreeter"
 )]
 trait Greeter {
     async fn get_user_data(&self) -> Result<String, zbus::Error>;
@@ -1085,7 +1085,7 @@ impl cosmic::Application for App {
     type Message = Message;
 
     /// The unique application ID to supply to the window manager.
-    const APP_ID: &'static str = "com.system76.CosmicGreeter";
+    const APP_ID: &'static str = "com.lingmoos.LingmoGreeter";
 
     fn core(&self) -> &Core {
         &self.common.core

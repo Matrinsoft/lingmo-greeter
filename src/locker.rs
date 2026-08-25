@@ -649,7 +649,7 @@ impl cosmic::Application for App {
     type Message = Message;
 
     /// The unique application ID to supply to the window manager.
-    const APP_ID: &'static str = "com.system76.CosmicGreeter";
+    const APP_ID: &'static str = "com.lingmoos.LingmoGreeter";
 
     fn core(&self) -> &Core {
         &self.common.core
@@ -1209,7 +1209,7 @@ impl cosmic::Application for App {
         subscriptions.push(
             cosmic_config::config_subscription(
                 TypeId::of::<TimeAppletSubscription>(),
-                "com.system76.CosmicAppletTime".into(),
+                "com.lingmoos.LingmoAppletTime".into(),
                 TimeAppletConfig::VERSION,
             )
             .map(|res| {
